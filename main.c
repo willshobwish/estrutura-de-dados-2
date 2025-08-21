@@ -1,45 +1,40 @@
-#include "stdio.h"
-#include "stdlib.h"
+#include <stdio.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
-#define MAX 2
-
-typedef struct No {
-    int n;
-    int folha;
-    int chave[MAX];
-    struct No *filho[MAX + 1];
-} NoArvB, *ArvoreB;
-
-int BuscaArvoreB(ArvoreB r, int k) {
-    int i = 1;
-    while (i <= r->n && k > r->chave[i]) {
-        i++;
-    }
-    if (i <= r->n && k == r->chave[i]) {
-        return r->chave[i];
-    } else {
-        return BuscaArvoreB(r->filho[i], k);
-    }
-}
+typedef struct {
+    unsigned int index;
+    unsigned int height;
+    unsigned int width;
+    unsigned char R;
+    unsigned char G;
+    unsigned char B;
+} PixelData;
 
 int main(void) {
-    ArvoreB r = malloc(sizeof(NoArvB));
-    r->n=1;
-    r->chave[0]=30;
-    r->filho[0]=malloc(sizeof(NoArvB));
-    r->filho[1]=malloc(sizeof(NoArvB));
-    ArvoreB filhoA = r->filho[0];
-    ArvoreB filhoB = r->filho[1];
-    filhoA->n=2;
-    filhoA->chave[0]=10;
-    filhoA->chave[1]=20;
-    filhoB->n=2;
-    filhoB->chave[0]=30;
-    filhoB->chave[1]=40;
-    // printf("%d",r->chave[0]);
-    // printf("%d",r->filho[0]->chave[0]);
-    // printf("%d",r->chave[0]);
-    // printf("%d",r->chave[0]);
- BuscaArvoreB(r,40);
+    int width, height, channels;
+    unsigned char *img = stbi_load("ISIC_0024329.jpg", &width, &height, &channels,0);
+
+    if (!img) {
+        printf("Failed to load image\n");
+        return 1;
+    }
+
+    printf("Image size: %dx%d, Channels: %d\n", width, height, channels);
+    int i=0;
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            int idx = (y * width + x) * channels;
+            // printf("[%d,%d]", y, x);
+            printf("%d",i);
+            if (channels >= 1) printf(" R:%d", img[idx + 0]);
+            if (channels >= 2) printf(" G:%d", img[idx + 1]);
+            if (channels >= 3) printf(" B:%d", img[idx + 2]);
+            if (channels == 4) printf(" A:%d", img[idx + 3]);
+            printf("\n");
+            i++;
+        }
+    }
+    stbi_image_free(img);
     return 0;
 }
