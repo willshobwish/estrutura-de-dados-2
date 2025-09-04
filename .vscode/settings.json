@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "*.ino": "arduino-output",
+        "*.css": "css",
+        "btree.h": "c",
+        "stb_image.h": "c",
+        "stdio.h": "c",
+        "math.h": "c",
+        "stdlib.h": "c"
+    },
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+    "python-envs.pythonProjects": []
+}

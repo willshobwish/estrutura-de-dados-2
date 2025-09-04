@@ -1,7 +1,7 @@
 #ifndef BTREE_H
 #define BTREE_H
 
-#define MAX 2
+#define MAX 3
 
 typedef struct No {
     int n;
@@ -11,7 +11,10 @@ typedef struct No {
 } NoArvB, *ArvoreB;
 
 int BuscaArvoreB(ArvoreB r, int k);
-void InsereArvoreB(ArvoreB r, int k);
+ArvoreB InsereArvoreB(ArvoreB r, int k);
 void RemoveArvoreB(ArvoreB r, int k);
-
+NoArvB *AllocateNode();
+void SplitChildArvoreB(NoArvB *x, int i);
+void InsereNaoCheioArvoreB(ArvoreB x, int k);
+void PrintBTree(ArvoreB r, int level);
 #endif 
