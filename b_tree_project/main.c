@@ -43,9 +43,10 @@ int main(void) {
     }
 
     shuffle_pixels(pixels, pixel_count);
-    for(int i=0;i<10;i++){
-        printf("%d\n",pixels[i].index);
-    }
+
+    // for(int i=0;i<10;i++){
+    //     printf("%d\n",pixels[i].index);
+    // }
     ArvoreB r = AllocateNode();
 
     if (!r) {

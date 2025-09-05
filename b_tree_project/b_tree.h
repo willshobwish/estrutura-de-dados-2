@@ -13,6 +13,14 @@ typedef struct No {
     struct No *filho[MAX + 1]; // Child pointers
 } NoArvB, *ArvoreB;
 
+typedef struct No {
+    int n;                     // Number of keys in the node
+    int folha;                  // Is leaf (1) or not (0)
+    int chave[MAX];             // Keys
+    PixelData pixel[MAX];       // Data associated with each key
+    unsigned filho[MAX + 1]; // Child pointers
+} NoArvB, *ArvoreB;
+
 
 int BuscaArvoreB(ArvoreB r, int k);
 ArvoreB InsereArvoreB(ArvoreB r, int k, PixelData px);
