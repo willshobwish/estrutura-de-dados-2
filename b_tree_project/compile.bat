@@ -1,0 +1,1 @@
+gcc -g -Wall -o program main.c b_tree.c pixel_data.c random_array_generator.c -lm

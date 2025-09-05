@@ -6,7 +6,11 @@
         "stb_image.h": "c",
         "stdio.h": "c",
         "math.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "stddef.h": "c",
+        "random_array_generator.h": "c",
+        "b_tree.h": "c",
+        "pixel_data.h": "c"
     },
     "python-envs.defaultEnvManager": "ms-python.python:conda",
     "python-envs.defaultPackageManager": "ms-python.python:conda",
