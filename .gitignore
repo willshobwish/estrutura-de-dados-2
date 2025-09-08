@@ -53,3 +53,28 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.nlo
+*.synctex.gz
+*.toc
+*.ist
+*.glo
+*.bcf
+*.aux
+*.acn
+*.out
+*.run.xml
+*.lol
+*.snm
+*.vrb
+*.nav
+
+*.zip
