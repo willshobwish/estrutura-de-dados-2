@@ -1,5 +1,5 @@
-#ifndef PATRICIA_TRIE_H
-#define PATRICIA_TRIE_H
+#ifndef RADIX_H
+#define RADIX_H
 #define bits_na_chave 32
 
 typedef struct No {
