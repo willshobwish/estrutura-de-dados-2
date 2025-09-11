@@ -13,5 +13,8 @@ int main(void) {
         r = InsereArvoreB(r, array[i]);
     }
     PrintBTree(r, 0);
+    for (int i = 0; i < 100; i++) {
+        RemoveArvoreB(r, array[i]);
+    }
     return 0;
 }

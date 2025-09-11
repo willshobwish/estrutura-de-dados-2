@@ -9,10 +9,9 @@ typedef struct No {
     int chave[MAX];
     struct No *filho[MAX + 1];
 } NoArvB, *ArvoreB;
-
+ArvoreB RemoveArvoreB(ArvoreB root, int k);
 int BuscaArvoreB(ArvoreB r, int k);
 ArvoreB InsereArvoreB(ArvoreB r, int k);
-void RemoveArvoreB(ArvoreB r, int k);
 NoArvB *AllocateNode();
 void SplitChildArvoreB(NoArvB *x, int i);
 void InsereNaoCheioArvoreB(ArvoreB x, int k);

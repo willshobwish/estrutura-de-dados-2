@@ -1,6 +1,7 @@
 #include "b_tree.h"
-#include "stdlib.h"
-#include "stdio.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
 
 int BuscaArvoreB(ArvoreB r, int k) {
     // printf("%d\n",r->n);
