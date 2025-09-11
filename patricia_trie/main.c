@@ -13,12 +13,12 @@ int main(void) {
     //     printf("Nao encontrado\n");
     // }
     // return 0;
-    int value = 10000;
-    for(int i=0;i<value;i++){
-        insere(&arvore, i);
+    int value[] = {5,4,7,3,1};
+    for(int i=0;i<5;i++){
+        insere(&arvore, value[i]);
     }
-    for(int i=0;i<value;i++){
-        No *resultado = busca(arvore, i);
+    for(int i=0;i<5;i++){
+        No *resultado = busca(arvore, value[i]);
         printf("\n\nChave:%u\nBit: %d\nEsquerdo: %d\nDireito: %d",resultado->chave,resultado->bit,resultado->dir->chave,resultado->esq->chave);
     }
 }

@@ -1,6 +1,6 @@
 #ifndef PATRICIA_TRIE_H
 #define PATRICIA_TRIE_H
-#define bits_na_chave 32
+#define bits_na_chave 3
 
 typedef struct No {
     unsigned chave;
