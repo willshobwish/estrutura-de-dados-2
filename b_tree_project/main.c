@@ -45,9 +45,6 @@ int main(void) {
 
     shuffle_pixels(pixels, pixel_count);
 
-    // for(int i=0;i<10;i++){
-    //     printf("%d\n",pixels[i].index);
-    // }
     ArvoreB r = AllocateNode();
 
     if (!r) {
@@ -60,14 +57,10 @@ int main(void) {
     r->folha = 1;
     r->n = 0;
 
-    // Fixed function call - was missing parameter
-    // Changed loop variable to size_t to match pixel_count type
     for (size_t i = 0; i < pixel_count; i++) {
         r = InsereArvoreB(r, pixels[i].index, pixels[i]);
     }
 
-    // PrintBTree(r, 0);
-    // printf("AAA\n");
     PixelData *recreateImage = malloc(sizeof(PixelData) * pixel_count);
     if (!recreateImage) {
         printf("Failed to allocate memory for recreateImage\n");
@@ -76,10 +69,8 @@ int main(void) {
         return 1;
     }
     
-    // Changed loop variable to size_t to match pixel_count type
     for (size_t i = 0; i < pixel_count; i++) {
         recreateImage[i] = BuscaArvoreB(r, pixels[i].index);
-        // Check if the search was successful
         if (recreateImage[i].index == (unsigned int)-1) {
             printf("Warning: Failed to find pixel with index %u\n", pixels[i].index);
         }
@@ -107,7 +98,6 @@ int main(void) {
         printf("Image saved to 'reconstructed.png'.\n");
     }
 
-    // Clean up
     free(pixels);
     free(recreateImage);
     free(imageArr);
