@@ -17,7 +17,7 @@ O programa carrega uma imagem PNG, extrai os dados de cada pixel, embaralha alea
 ├── random_array_generator.c    # Gerador de arrays aleatórios
 ├── random_array_generator.h    # Cabeçalho do gerador
 ├── stb_image.h                 # Biblioteca para carregar imagens (externa)
-└── stb_image_write.h          # Biblioteca para salvar imagens (externa)
+└── stb_image_write.h           # Biblioteca para salvar imagens (externa)
 ```
 
 ## Funcionalidades
@@ -124,18 +124,11 @@ for (size_t i = 0; i < pixel_count; i++) {
 }
 ```
 
-## Tratamento de Erros
-
-O programa inclui verificações para:
-- Falha no carregamento da imagem
-- Falha na alocação de memória
-- Falha na criação de nós da árvore
-- Pixels não encontrados na busca
-- Falha na gravação da imagem
-
 ## Notas de Implementação
 
 - A B-Tree usa o índice do pixel como chave de ordenação
 - O embaralhamento usa o algoritmo Fisher-Yates para distribuição uniforme
 - A implementação segue os algoritmos clássicos de B-Tree do Cormen
 - Gerenciamento manual de memória com verificações de erro
+- Não foi implementado a remoção em árvore B
+- A documentação está no estilo Doxygen, porém não foi gerado em PDF porque estava com muitos conflitos entre os pacotes utilizados no LaTeX
