@@ -78,3 +78,4 @@ dkms.conf
 *.nav
 
 *.zip
+*.bcf-SAVE-ERROR
