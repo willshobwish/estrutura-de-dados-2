@@ -3,12 +3,157 @@
 #include <stdio.h>   // Inclui funções de entrada/saída, como printf e scanf
 #include <stdlib.h>  // Inclui funções de alocação e liberação de memória (malloc, free)
 
+// ========== FUNCOES DA PILHA ==========
+
+/*
+ * Funcao criar_pilha
+ * Cria e inicializa uma pilha dinamica para armazenar inteiros
+ * Capacidade inicial de 100 elementos (pode ser expandida)
+ */
+p_pilha criar_pilha() {
+    p_pilha p = malloc(sizeof(Pilha));
+    p->capacidade = 100;
+    p->dados = malloc(p->capacidade * sizeof(int));
+    p->topo = -1;  // Pilha vazia tem topo -1
+    return p;
+}
+
+/*
+ * Funcao destroi_pilha
+ * Libera toda a memoria alocada pela pilha
+ */
+void destroi_pilha(p_pilha p) {
+    free(p->dados);
+    free(p);
+}
+
+/*
+ * Funcao empilhar
+ * Insere um valor no topo da pilha
+ * Expande a capacidade se necessario
+ */
+void empilhar(p_pilha p, int valor) {
+    // Se a pilha estiver cheia, dobra a capacidade
+    if (p->topo == p->capacidade - 1) {
+        p->capacidade *= 2;
+        p->dados = realloc(p->dados, p->capacidade * sizeof(int));
+    }
+    // Incrementa o topo e insere o valor
+    p->topo++;
+    p->dados[p->topo] = valor;
+}
+
+/*
+ * Funcao desempilhar
+ * Remove e retorna o valor do topo da pilha
+ * Retorna -1 se a pilha estiver vazia (cuidado: pode ser um valor valido)
+ */
+int desempilhar(p_pilha p) {
+    if (p->topo == -1) {
+        return -1;  // Pilha vazia
+    }
+    int valor = p->dados[p->topo];
+    p->topo--;
+    return valor;
+}
+
+/*
+ * Funcao pilha_vazia
+ * Verifica se a pilha esta vazia
+ * Retorna 1 se vazia, 0 caso contrario
+ */
+int pilha_vazia(p_pilha p) {
+    return p->topo == -1;
+}
+
+// ========== FUNCOES DA FILA ==========
+
+/*
+ * Funcao criar_fila
+ * Cria e inicializa uma fila circular dinamica para armazenar inteiros
+ * Capacidade inicial de 100 elementos (pode ser expandida)
+ */
+p_fila criar_fila() {
+    p_fila f = malloc(sizeof(Fila));
+    f->capacidade = 100;
+    f->dados = malloc(f->capacidade * sizeof(int));
+    f->inicio = 0;
+    f->fim = 0;
+    f->tamanho = 0;
+    return f;
+}
+
+/*
+ * Funcao destroi_fila
+ * Libera toda a memoria alocada pela fila
+ */
+void destroi_fila(p_fila f) {
+    free(f->dados);
+    free(f);
+}
+
+/*
+ * Funcao enfileira
+ * Insere um valor no final da fila
+ * Expande a capacidade se necessario
+ */
+void enfileira(p_fila f, int valor) {
+    // Se a fila estiver cheia, dobra a capacidade
+    if (f->tamanho == f->capacidade) {
+        int nova_capacidade = f->capacidade * 2;
+        int* novos_dados = malloc(nova_capacidade * sizeof(int));
+
+        // Copia os elementos para o novo array
+        for (int i = 0; i < f->tamanho; i++) {
+            novos_dados[i] = f->dados[(f->inicio + i) % f->capacidade];
+        }
+
+        free(f->dados);
+        f->dados = novos_dados;
+        f->inicio = 0;
+        f->fim = f->tamanho;
+        f->capacidade = nova_capacidade;
+    }
+
+    // Insere o valor no final da fila
+    f->dados[f->fim] = valor;
+    f->fim = (f->fim + 1) % f->capacidade;
+    f->tamanho++;
+}
+
+/*
+ * Funcao desenfileira
+ * Remove e retorna o valor do inicio da fila
+ * Retorna -1 se a fila estiver vazia (cuidado: pode ser um valor valido)
+ */
+int desenfileira(p_fila f) {
+    if (f->tamanho == 0) {
+        return -1;  // Fila vazia
+    }
+
+    int valor = f->dados[f->inicio];
+    f->inicio = (f->inicio + 1) % f->capacidade;
+    f->tamanho--;
+    return valor;
+}
+
+/*
+ * Funcao fila_vazia
+ * Verifica se a fila esta vazia
+ * Retorna 1 se vazia, 0 caso contrario
+ */
+int fila_vazia(p_fila f) {
+    return f->tamanho == 0;
+}
+
+// ========== FUNCOES DO GRAFO ==========
+
 // Função que cria um grafo com 'n' vértices
 p_grafo CriarGrafo(int n) {
     int i, j;
-    p_grafo g = malloc(sizeof(Grafo));   // Aloca memória para a estrutura principal do grafo
-    g->n = n;                            // Define o número de vértices
-    g->adj = malloc(n * sizeof(int *));  // Aloca memória para o vetor de ponteiros das listas de adjacência (matriz)
+    p_grafo g = malloc(sizeof(Grafo));  // Aloca memória para a estrutura principal do grafo
+    g->n = n;                           // Define o número de vértices
+    g->adj = malloc(n * sizeof(int*));  // Aloca memória para o vetor de ponteiros das listas de adjacência (matriz)
 
     for (i = 0; i < n; i++) {
         g->adj[i] = malloc(n * sizeof(int));  // Aloca memória para cada linha da matriz de adjacência
@@ -130,7 +275,7 @@ int ExisteCaminho(p_grafo g, int s, int t) {
 }
 
 // Função auxiliar recursiva para busca de caminho (DFS)
-int BuscaRec(p_grafo g, int *visitado, int v, int t) {
+int BuscaRec(p_grafo g, int* visitado, int v, int t) {
     int w;
     if (v == t) {  // Se encontrou o vértice destino
         return 1;
@@ -144,3 +289,184 @@ int BuscaRec(p_grafo g, int *visitado, int v, int t) {
     }
     return 0;  // Se não encontrou, retorna 0
 }
+
+/*
+ * RACIOCINIO GERAL:
+ * Para encontrar componentes conexas em um grafo:
+ * 1. Marcar todos os vertices como "nao visitados" (-1)
+ * 2. Para cada vertice nao visitado:
+ *    - Fazer uma busca (DFS) marcando todos os vertices alcancaveis com o mesmo numero de componente
+ *    - Incrementar o contador de componentes
+ * 3. Retornar o array com o componente de cada vertice
+ */
+int* EncontraComponentes(p_grafo g) {
+    // Declaracao das variaveis:
+    // s = vertice sendo analisado
+    // c = contador de componentes (comeca em 0)
+    // componentes = array que armazena qual componente cada vertice pertence
+    int s, c = 0, *componentes = malloc(g->n * sizeof(int));
+
+    // PASSO 1: Inicializar todos os vertices como nao visitados (-1)
+    // Percorre todos os n vertices do grafo
+    for (s = 0; s < g->n; s++) {
+        componentes[s] = -1;  // -1 indica que o vertice ainda nao foi visitado
+    }
+
+    // PASSO 2: Para cada vertice nao visitado, explorar sua componente conexa
+    // Percorre novamente todos os vertices
+    for (s = 0; s < g->n; s++) {
+        // Se o vertice s ainda nao foi visitado (componentes[s] == -1)
+        if (componentes[s] == -1) {
+            // Visita recursivamente todos os vertices alcancaveis a partir de s
+            // marcando-os com o numero do componente atual (c)
+            VisitaRec(g, componentes, c, s);
+
+            // Incrementa o contador de componentes para a proxima componente conexa
+            c++;
+        }
+    }
+
+    // PASSO 3: Retornar o array com os componentes
+    // Cada posicao i do array contem o numero do componente ao qual o vertice i pertence
+    return componentes;
+}
+
+/*
+ * RACIOCINIO DA BUSCA EM PROFUNDIDADE (DFS):
+ * Esta funcao implementa uma DFS (Depth-First Search) recursiva
+ * que marca todos os vertices alcancaveis a partir de v com o mesmo numero de componente
+ * Versao para matriz de adjacencia
+ */
+void VisitaRec(p_grafo g, int* componentes, int comp, int v) {
+    int w;
+
+    // PASSO 1: Marcar o vertice atual v como pertencente ao componente comp
+    componentes[v] = comp;
+
+    // PASSO 2: Percorrer todos os possiveis vizinhos do vertice v
+    // Para matriz de adjacencia, verifica todos os vertices
+    for (w = 0; w < g->n; w++) {
+        // Se existe aresta entre v e w E w ainda nao foi visitado
+        if (g->adj[v][w] && componentes[w] == -1) {
+            // RECURSAO: Visita o vizinho nao visitado
+            // Isso garante que todos os vertices alcancaveis serao marcados
+            VisitaRec(g, componentes, comp, w);
+        }
+    }
+    // Quando a recursao terminar, todos os vertices da componente conexa
+    // estarao marcados com o mesmo numero (comp)
+}
+
+/*
+ * Funcao encontraCaminhos
+ * Encontra caminhos de um vertice origem s para todos os vertices alcancaveis
+ * Retorna um array onde pai[i] indica o pai do vertice i na arvore de busca
+ * -1 indica vertice nao alcancavel, i indica raiz (pai de si mesmo)
+ */
+int* encontraCaminhos(p_grafo g, int s) {
+    int i, *pai = malloc(g->n * sizeof(int));
+    // Inicializa todos os vertices como nao visitados (-1)
+    for (i = 0; i < g->n; i++) {
+        pai[i] = -1;
+    }
+    // Inicia busca em profundidade a partir de s
+    // s e pai de si mesmo (raiz da busca)
+    buscaEmProfundidade(g, pai, s, s);
+    return pai;
+}
+
+/*
+ * Funcao buscaEmProfundidade (recursiva)
+ * Implementa DFS recursiva para construir arvore de caminhos
+ * g = grafo, pai = array de pais, p = pai do vertice atual, v = vertice atual
+ * Versao para matriz de adjacencia
+ */
+void buscaEmProfundidade(p_grafo g, int* pai, int p, int v) {
+    int w;
+    // Marca o pai do vertice atual
+    pai[v] = p;
+
+    // Percorre todos os possiveis vizinhos
+    for (w = 0; w < g->n; w++) {
+        // Se existe aresta entre v e w E w ainda nao foi visitado
+        if (g->adj[v][w] && pai[w] == -1) {
+            // Continua a busca recursivamente
+            // v se torna o pai de w
+            buscaEmProfundidade(g, pai, v, w);
+        }
+    }
+}
+
+/*
+ * Funcao busca_em_profundidade (iterativa com pilha)
+ * Implementa DFS iterativa usando pilha explicita
+ * Alternativa a versao recursiva, evita estouro de pilha em grafos grandes
+ * Retorna array de pais formando arvore de busca
+ */
+int* busca_em_profundidade(p_grafo g, int s) {
+    int w, v;
+    int* pai = malloc(g->n * sizeof(int));
+    int* visitado = malloc(g->n * sizeof(int));
+    p_pilha p = criar_pilha();
+    for (v = 0; v < g->n; v++) {
+        pai[v] = -1;
+        visitado[v] = 0;
+    }
+    empilhar(p, s);
+    pai[s] = s;
+    while (!pilha_vazia(p)) {
+        v = desempilhar(p);
+        visitado[v] = 1;
+        for (w = 0; w < g->n; w++)
+            if (g->adj[v][w] && !visitado[w]) {
+                pai[w] = v;
+                empilhar(p, w);
+            }
+    }
+    destroi_pilha(p);
+    free(visitado);
+    return pai;
+}
+
+/*
+ * Funcao busca_em_largura (BFS - Breadth-First Search)
+ * Implementa BFS usando fila para explorar o grafo nivel por nivel
+ * Retorna array de pais formando arvore de busca
+ * BFS encontra o caminho mais curto (em numero de arestas) entre vertices
+ */
+int* busca_em_largura(p_grafo g, int s) {
+    int w, v;
+    int* pai = malloc(g->n * sizeof(int));
+    int* visitado = malloc(g->n * sizeof(int));
+    p_fila f = criar_fila();
+
+    // Inicializa todos os vertices como nao visitados
+    for (v = 0; v < g->n; v++) {
+        pai[v] = -1;
+        visitado[v] = 0;
+    }
+
+    // Enfileira o vertice inicial
+    enfileira(f, s);
+    pai[s] = s;
+    visitado[s] = 1;
+
+    // Processa vertices nivel por nivel
+    while (!fila_vazia(f)) {
+        v = desenfileira(f);
+
+        // Explora todos os vizinhos de v
+        for (w = 0; w < g->n; w++) {
+            if (g->adj[v][w] && !visitado[w]) {
+                visitado[w] = 1;  // Marca como visitado para evitar repeticao na fila
+                pai[w] = v;       // Define v como pai de w
+                enfileira(f, w);  // Enfileira w para processar seus vizinhos depois
+            }
+        }
+    }
+
+    destroi_fila(f);
+    free(visitado);
+    return pai;
+}
+
