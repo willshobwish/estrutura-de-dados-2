@@ -3,8 +3,7 @@
 #include <stdio.h>   // Inclui funções de entrada/saída, como printf e scanf
 #include <stdlib.h>  // Inclui funções de alocação e liberação de memória (malloc, free)
 
-// ========== FUNCOES DA PILHA ==========
-
+// Funções de pilha (utilizados em busca em profundidade (DFS))
 /*
  * Funcao criar_pilha
  * Cria e inicializa uma pilha dinamica para armazenar inteiros
@@ -146,8 +145,7 @@ int fila_vazia(p_fila f) {
     return f->tamanho == 0;
 }
 
-// ========== FUNCOES DO GRAFO ==========
-
+// Funções de grafo
 // Função que cria um grafo com 'n' vértices
 p_grafo CriarGrafo(int n) {
     int i, j;

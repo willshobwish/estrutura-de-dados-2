@@ -6,12 +6,12 @@
 
 p_grafo CriarGrafo(int n) {
     /*
-     * Função CriarGrafo
+     * Funcão CriarGrafo
      * Cria e inicializa um grafo com n vértices usando lista de adjacência.
      * Cada vértice terá uma lista (inicialmente vazia) para armazenar seus vizinhos.
      */
-    int i;  // Variável para iteração
-    // Aloca espaço para a estrutura principal do grafo
+    int i;  // Variável para iteracão
+    // Aloca espaco para a estrutura principal do grafo
     p_grafo g = malloc(sizeof(Grafo));
     // Define o número de vértices do grafo
     g->n = n;
@@ -26,7 +26,7 @@ p_grafo CriarGrafo(int n) {
 }
 
 /*
- * Função LiberaLista
+ * Funcão LiberaLista
  * Libera recursivamente todos os nós de uma lista de adjacência.
  * Utilizada para liberar a memória de cada lista de vizinhos de um vértice.
  */
@@ -41,7 +41,7 @@ void LiberaLista(p_no lista) {
 }
 
 void DestroiGrafo(p_grafo g) {
-    // Função que libera toda a memória alocada para o grafo.
+    // Funcão que libera toda a memória alocada para o grafo.
     int i;
     // Para cada vértice, libera a lista de adjacência (os vizinhos).
     for (i = 0; i < g->n; i++) {
@@ -54,21 +54,21 @@ void DestroiGrafo(p_grafo g) {
 }
 
 p_no InsereNaLista(p_no lista, int v, int peso) {
-    // Função que insere um novo elemento (v) no início da lista de adjacência.
+    // Funcão que insere um novo elemento (v) no início da lista de adjacência.
     // Aloca memória para um novo nó da lista de adjacência.
     p_no novo = malloc(sizeof(No));
     // Define o valor do vértice armazenado neste nó.
     novo->v = v;
     // Define o peso da aresta
     novo->peso = peso;
-    // Faz o novo nó apontar para o início da lista recebida (inserção no início).
+    // Faz o novo nó apontar para o início da lista recebida (insercão no início).
     novo->prox = lista;
     // Retorna o ponteiro para o novo nó, que agora é o início da lista.
     return novo;
 }
 
 /*
- * Função InsereAresta
+ * Funcão InsereAresta
  * Insere uma aresta não direcionada entre os vértices u e v com peso padrão 1.
  * Para lista de adjacência: adiciona v na lista de u e u na lista de v.
  */
@@ -77,7 +77,7 @@ void InsereAresta(p_grafo g, int u, int v) {
 }
 
 /*
- * Função InsereArestaPonderada
+ * Funcão InsereArestaPonderada
  * Insere uma aresta não direcionada entre os vértices u e v com peso especificado.
  */
 void InsereArestaPonderada(p_grafo g, int u, int v, int peso) {
@@ -88,9 +88,9 @@ void InsereArestaPonderada(p_grafo g, int u, int v, int peso) {
 }
 
 /*
- * Função RemoveDaLista
+ * Funcão RemoveDaLista
  * Remove o nó com valor v da lista de adjacência.
- * Retorna o ponteiro para o início da lista após a remoção.
+ * Retorna o ponteiro para o início da lista após a remocão.
  * Utiliza recursão para encontrar e remover o nó desejado.
  */
 p_no RemoveDaLista(p_no lista, int v) {
@@ -112,17 +112,17 @@ p_no RemoveDaLista(p_no lista, int v) {
     }
 }
 
-// Função que remove uma aresta não direcionada entre os vértices u e v.
+// Funcão que remove uma aresta não direcionada entre os vértices u e v.
 // Ou seja, remove v da lista de adjacência de u e u da lista de adjacência de v.
 void RemoveAresta(p_grafo g, int u, int v) {
     // Remove v da lista de adjacência de u.
     g->adjacencia[u] = RemoveDaLista(g->adjacencia[u], v);
     // Remove u da lista de adjacência de v.
     g->adjacencia[v] = RemoveDaLista(g->adjacencia[v], u);
-    // Após essas operações, a aresta entre u e v deixa de existir no grafo.
+    // Após essas operacões, a aresta entre u e v deixa de existir no grafo.
 }
 
-// Função que verifica se existe uma aresta entre os vértices u e v.
+// Funcão que verifica se existe uma aresta entre os vértices u e v.
 // Retorna 1 se existe, 0 caso contrário.
 int TemAresta(p_grafo g, int u, int v) {
     p_no t;  // Ponteiro para percorrer a lista de adjacência de u.
@@ -137,7 +137,7 @@ int TemAresta(p_grafo g, int u, int v) {
     return 0;
 }
 
-// Função que lê um grafo da entrada padrão.
+// Funcão que lê um grafo da entrada padrão.
 // Espera receber o número de vértices (n) e arestas (m), seguido de m pares de vértices representando as arestas.
 p_grafo LeGrafo() {
     int n, m, i, u, v;  // n: número de vértices, m: número de arestas, u/v: vértices da aresta, i: contador
@@ -159,7 +159,7 @@ p_grafo LeGrafo() {
     return g;
 }
 
-// Função que imprime todas as arestas do grafo.
+// Funcão que imprime todas as arestas do grafo.
 // Para cada vértice, percorre sua lista de adjacência e imprime cada conexão.
 void ImprimeArestas(p_grafo g) {
     int u;   // Variável para iterar sobre os vértices
@@ -176,7 +176,7 @@ void ImprimeArestas(p_grafo g) {
 }
 
 /*
- * Função Grau
+ * Funcão Grau
  * Calcula o grau (número de conexões) de um vértice u.
  * Para lista de adjacência: percorre a lista e conta os nós.
  * O grau representa quantos vizinhos (arestas) o vértice possui.
@@ -192,7 +192,7 @@ int Grau(p_grafo g, int u) {
     return grau;
 }
 
-// Função que encontra o vértice mais popular (com maior grau)
+// Funcão que encontra o vértice mais popular (com maior grau)
 int MaisPopular(p_grafo g) {
     int u, max, grauMax, grauAtual;
     max = 0;               // Inicializa o mais popular como o vértice 0
@@ -209,7 +209,7 @@ int MaisPopular(p_grafo g) {
     return max;  // Retorna o vértice com maior grau
 }
 
-// Função que imprime "recomendações" de vértices conectados a amigos de 'u'
+// Funcão que imprime "recomendacões" de vértices conectados a amigos de 'u'
 // Para lista: percorre a lista de adjacência de u, depois a lista de cada vizinho
 void ImprimeRecomendacoes(p_grafo g, int u) {
     p_no t, w;
@@ -231,14 +231,14 @@ void ImprimeRecomendacoes(p_grafo g, int u) {
  * Para encontrar componentes conexas em um grafo:
  * 1. Marcar todos os vértices como "não visitados" (-1)
  * 2. Para cada vértice não visitado:
- *    - Fazer uma busca (DFS) marcando todos os vértices alcançáveis com o mesmo número de componente
+ *    - Fazer uma busca (DFS) marcando todos os vértices alcancáveis com o mesmo número de componente
  *    - Incrementar o contador de componentes
  * 3. Retornar o array com o componente de cada vértice
  */
 int* EncontraComponentes(p_grafo g) {
-    // Declaração das variáveis:
+    // Declaracão das variáveis:
     // s = vértice sendo analisado
-    // c = contador de componentes (começa em 0)
+    // c = contador de componentes (comeca em 0)
     // componentes = array que armazena qual componente cada vértice pertence
     int s, c = 0, *componentes = malloc(g->n * sizeof(int));
 
@@ -253,7 +253,7 @@ int* EncontraComponentes(p_grafo g) {
     for (s = 0; s < g->n; s++) {
         // Se o vértice s ainda não foi visitado (componentes[s] == -1)
         if (componentes[s] == -1) {
-            // Visita recursivamente todos os vértices alcançáveis a partir de s
+            // Visita recursivamente todos os vértices alcancáveis a partir de s
             // marcando-os com o número do componente atual (c)
             VisitaRec(g, componentes, c, s);
 
@@ -263,14 +263,14 @@ int* EncontraComponentes(p_grafo g) {
     }
 
     // PASSO 3: Retornar o array com os componentes
-    // Cada posição i do array contém o número do componente ao qual o vértice i pertence
+    // Cada posicão i do array contém o número do componente ao qual o vértice i pertence
     return componentes;
 }
 
 /*
  * RACIOCÍNIO DA BUSCA EM PROFUNDIDADE (DFS):
- * Esta função implementa uma DFS (Depth-First Search) recursiva
- * que marca todos os vértices alcançáveis a partir de v com o mesmo número de componente
+ * Esta funcão implementa uma DFS (Depth-First Search) recursiva
+ * que marca todos os vértices alcancáveis a partir de v com o mesmo número de componente
  */
 void VisitaRec(p_grafo g, int* componentes, int comp, int v) {
     // t = ponteiro para percorrer a lista de adjacência
@@ -280,13 +280,13 @@ void VisitaRec(p_grafo g, int* componentes, int comp, int v) {
     componentes[v] = comp;
 
     // PASSO 2: Percorrer todos os vizinhos do vértice v
-    // t começa no primeiro nó da lista de adjacência de v
-    // e avança enquanto não chegar ao fim (NULL)
+    // t comeca no primeiro nó da lista de adjacência de v
+    // e avanca enquanto não chegar ao fim (NULL)
     for (t = g->adjacencia[v]; t != NULL; t = t->prox) {
         // Se o vizinho t->v ainda não foi visitado (componentes[t->v] == -1)
         if (componentes[t->v] == -1) {
             // RECURSÃO: Visita o vizinho não visitado
-            // Isso garante que todos os vértices alcançáveis serão marcados
+            // Isso garante que todos os vértices alcancáveis serão marcados
             VisitaRec(g, componentes, comp, t->v);
         }
     }
@@ -323,6 +323,7 @@ void ordenacao_topologica(p_grafo g) {
     free(visitado);
     printf("\n");
 }
+
 void visita_rec(p_grafo g, int* visitado, int v) {
     p_no t;
     visitado[v] = 1;
@@ -332,7 +333,7 @@ void visita_rec(p_grafo g, int* visitado, int v) {
     printf("%d ", v);
 }
 
-// ========== FUNCOES DA FILA DE PRIORIDADE (HEAP MINIMO) ==========
+// Funções de fila de prioridade
 
 /*
  * Funcao auxiliar para trocar dois itens na fila de prioridade
@@ -491,8 +492,6 @@ void diminuiprioridade(p_fp h, int vertice, int nova_prioridade) {
     // Sobe o elemento no heap (pois a prioridade diminuiu)
     sobe(h, idx);
 }
-
-// ========== ALGORITMO DE DIJKSTRA ==========
 
 /*
  * Funcao dijkstra
