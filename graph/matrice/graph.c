@@ -469,4 +469,3 @@ int* busca_em_largura(p_grafo g, int s) {
     free(visitado);
     return pai;
 }
-

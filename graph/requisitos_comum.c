@@ -5,13 +5,12 @@
 #include <string.h>
 
 /*
- * Função extrair_codigo
- * Extrai o código da disciplina (primeiros caracteres até o espaço)
- * Exemplo: "CIC002MAT3 Algoritmos..." -> "CIC002MAT3"
+ * Funcao extrair_codigo
+ * Extrai o codigo da disciplina (primeiros caracteres ate o espaco)
  */
 void extrair_codigo(const char* texto, char* codigo) {
     int i = 0;
-    // Copia caracteres até encontrar espaço ou fim da string
+    // Copia caracteres ate encontrar espaco ou fim da string
     while (texto[i] != ' ' && texto[i] != '\0' && i < MAX_CODIGO - 1) {
         codigo[i] = texto[i];
         i++;
@@ -20,9 +19,9 @@ void extrair_codigo(const char* texto, char* codigo) {
 }
 
 /*
- * Função buscar_indice_disciplina
- * Busca o índice de uma disciplina pelo código
- * Retorna o índice se encontrado, -1 caso contrário
+ * Funcao buscar_indice_disciplina
+ * Busca o índice de uma disciplina pelo codigo
+ * Retorna o índice se encontrado, -1 caso contrario
  */
 int buscar_indice_disciplina(MapaDisciplinas* mapa, const char* codigo) {
     for (int i = 0; i < mapa->total; i++) {
@@ -34,7 +33,7 @@ int buscar_indice_disciplina(MapaDisciplinas* mapa, const char* codigo) {
 }
 
 /*
- * Função carregar_disciplinas
+ * Funcao carregar_disciplinas
  * Lê o arquivo CSV e carrega todas as disciplinas únicas
  * Retorna um mapa com todas as disciplinas e seus índices
  */
@@ -49,7 +48,7 @@ MapaDisciplinas* carregar_disciplinas(const char* arquivo) {
     mapa->total = 0;
 
     char linha[MAX_LINHA];
-    // Pula cabeçalho
+    // Pula cabecalho
     fgets(linha, sizeof(linha), fp);
 
     while (fgets(linha, sizeof(linha), fp)) {
@@ -82,11 +81,11 @@ MapaDisciplinas* carregar_disciplinas(const char* arquivo) {
             prereq[0] = '\0';
         }
 
-        // Extrai código da disciplina
+        // Extrai codigo da disciplina
         char codigo[MAX_CODIGO];
         extrair_codigo(disciplina, codigo);
 
-        // Verifica se a disciplina já foi adicionada
+        // Verifica se a disciplina ja foi adicionada
         if (buscar_indice_disciplina(mapa, codigo) == -1) {
             strcpy(mapa->disciplinas[mapa->total].codigo, codigo);
             strncpy(mapa->disciplinas[mapa->total].nome, disciplina, MAX_NOME - 1);
@@ -107,7 +106,7 @@ MapaDisciplinas* carregar_disciplinas(const char* arquivo) {
 }
 
 /*
- * Função imprimir_mapa_disciplinas
+ * Funcao imprimir_mapa_disciplinas
  * Imprime todas as disciplinas carregadas
  */
 void imprimir_mapa_disciplinas(MapaDisciplinas* mapa) {
@@ -124,8 +123,8 @@ void imprimir_mapa_disciplinas(MapaDisciplinas* mapa) {
 }
 
 /*
- * Função liberar_mapa
- * Libera memória do mapa de disciplinas
+ * Funcao liberar_mapa
+ * Libera memoria do mapa de disciplinas
  */
 void liberar_mapa(MapaDisciplinas* mapa) {
     free(mapa);
