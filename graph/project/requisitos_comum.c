@@ -53,13 +53,13 @@ MapaDisciplinas* carregar_disciplinas(const char* arquivo) {
 
     while (fgets(linha, sizeof(linha), fp)) {
         int ano, semestre;
+        char codigo[MAX_CODIGO];
         char disciplina[MAX_NOME];
-        char prereq[MAX_NOME];
 
         // Remove newline
         linha[strcspn(linha, "\n")] = 0;
 
-        // Parsing da linha CSV
+        // Parsing da linha CSV: Ano,Semestre,Codigo,Disciplinas,Codigo-Pre-Requisito,Pre-Requisito
         char* token = strtok(linha, ",");
         if (!token) continue;
         ano = atoi(token);
@@ -70,20 +70,13 @@ MapaDisciplinas* carregar_disciplinas(const char* arquivo) {
 
         token = strtok(NULL, ",");
         if (!token) continue;
-        strncpy(disciplina, token, MAX_NOME - 1);
-        disciplina[MAX_NOME - 1] = '\0';
+        strncpy(codigo, token, MAX_CODIGO - 1);
+        codigo[MAX_CODIGO - 1] = '\0';
 
         token = strtok(NULL, ",");
-        if (token) {
-            strncpy(prereq, token, MAX_NOME - 1);
-            prereq[MAX_NOME - 1] = '\0';
-        } else {
-            prereq[0] = '\0';
-        }
-
-        // Extrai codigo da disciplina
-        char codigo[MAX_CODIGO];
-        extrair_codigo(disciplina, codigo);
+        if (!token) continue;
+        strncpy(disciplina, token, MAX_NOME - 1);
+        disciplina[MAX_NOME - 1] = '\0';
 
         // Verifica se a disciplina ja foi adicionada
         if (buscar_indice_disciplina(mapa, codigo) == -1) {

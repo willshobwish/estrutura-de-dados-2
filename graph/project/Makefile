@@ -4,8 +4,8 @@ CC = gcc
 CFLAGS = -Wall -Wextra -g
 
 # Diretórios
-DIR_MATRICE = matrice
-DIR_LIST = list
+DIR_MATRICE = ../matrice
+DIR_LIST = ../list
 
 # Arquivos comuns
 COMUM_SRC = requisitos_comum.c

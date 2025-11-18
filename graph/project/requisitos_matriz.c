@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "matrice/graph.h"
+#include "../matrice/graph.h"
 #include "requisitos_comum.h"
 
 /*
@@ -26,54 +26,48 @@ p_grafo construir_grafo_requisitos_matriz(const char* arquivo, MapaDisciplinas* 
     int total_prereqs = 0;
 
     while (fgets(linha, sizeof(linha), fp)) {
-        char disciplina[MAX_NOME];
-        char prereq[MAX_NOME];
+        char codigo_disc[MAX_CODIGO];
+        char nome_disc[MAX_NOME];
+        char codigo_prereq[MAX_CODIGO];
 
         // Remove newline
         linha[strcspn(linha, "\n")] = 0;
 
-        // Parsing da linha CSV
+        // Parsing da linha CSV: Ano,Semestre,Codigo,Disciplinas,Codigo-Pre-Requisito,Pre-Requisito
         char* token = strtok(linha, ",");
-        if (!token) continue;
+        if (!token) continue;  // ano
 
-        token = strtok(NULL, ",");  // semestre
-        if (!token) continue;
+        token = strtok(NULL, ",");
+        if (!token) continue;  // semestre
 
-        token = strtok(NULL, ",");  // disciplina
-        if (!token) continue;
-        strncpy(disciplina, token, MAX_NOME - 1);
-        disciplina[MAX_NOME - 1] = '\0';
+        token = strtok(NULL, ",");
+        if (!token) continue;  // codigo
+        strncpy(codigo_disc, token, MAX_CODIGO - 1);
+        codigo_disc[MAX_CODIGO - 1] = '\0';
 
-        token = strtok(NULL, ",");  // pre-requisito
-        if (!token || strlen(token) == 0) continue;
+        token = strtok(NULL, ",");
+        if (!token) continue;  // nome da disciplina
+        strncpy(nome_disc, token, MAX_NOME - 1);
+        nome_disc[MAX_NOME - 1] = '\0';
 
-        strncpy(prereq, token, MAX_NOME - 1);
-        prereq[MAX_NOME - 1] = '\0';
+        token = strtok(NULL, ",");
+        if (!token || strlen(token) == 0) continue;  // codigo pre-requisito
+        strncpy(codigo_prereq, token, MAX_CODIGO - 1);
+        codigo_prereq[MAX_CODIGO - 1] = '\0';
 
-        // Extrai codigo da disciplina atual
-        char codigo_disc[MAX_CODIGO];
-        extrair_codigo(disciplina, codigo_disc);
+        // Busca indices das disciplinas
         int idx_disc = buscar_indice_disciplina(mapa, codigo_disc);
+        int idx_prereq = buscar_indice_disciplina(mapa, codigo_prereq);
 
-        if (idx_disc == -1) continue;
-
-        // Procura por "CIC" no pre-requisito para extrair o codigo
-        char* pos = strstr(prereq, "CIC");
-        if (pos) {
-            char codigo_prereq[MAX_CODIGO];
-            extrair_codigo(pos, codigo_prereq);
-            int idx_prereq = buscar_indice_disciplina(mapa, codigo_prereq);
-
-            if (idx_prereq != -1) {
-                // Insere aresta: pre-requisito -> disciplina
-                InsereAresta(g, idx_prereq, idx_disc);
-                total_prereqs++;
-            }
+        if (idx_disc != -1 && idx_prereq != -1) {
+            // Insere aresta: pre-requisito -> disciplina
+            InsereAresta(g, idx_prereq, idx_disc);
+            total_prereqs++;
         }
     }
 
     fclose(fp);
-    printf("\n=== Grafo de Pre-Requisitos (Matriz) Construido ===\n");
+    printf("\nGrafo de Pre-Requisitos (matriz) Construido\n");
     printf("Vertices: %d disciplinas\n", mapa->total);
     printf("Arestas: %d relacoes de pre-requisito\n", total_prereqs);
 
@@ -85,7 +79,7 @@ p_grafo construir_grafo_requisitos_matriz(const char* arquivo, MapaDisciplinas* 
  * Imprime os pre-requisitos de cada disciplina
  */
 void imprimir_prerequisitos(p_grafo g, MapaDisciplinas* mapa) {
-    printf("\n=== Pre-Requisitos por Disciplina ===\n");
+    printf("\nPre-requisitos por disciplina\n");
     for (int i = 0; i < mapa->total; i++) {
         int tem_prereq = 0;
         printf("\n%s - %s\n", mapa->disciplinas[i].codigo, mapa->disciplinas[i].nome);
@@ -111,7 +105,7 @@ void imprimir_prerequisitos(p_grafo g, MapaDisciplinas* mapa) {
  * Imprime as disciplinas que dependem de cada uma
  */
 void imprimir_dependentes(p_grafo g, MapaDisciplinas* mapa) {
-    printf("\n=== Disciplinas Dependentes ===\n");
+    printf("\nDisciplinas Dependentes\n");
     for (int i = 0; i < mapa->total; i++) {
         int tem_dep = 0;
         printf("\n%s - %s\n", mapa->disciplinas[i].codigo, mapa->disciplinas[i].nome);
@@ -165,7 +159,7 @@ int verificar_ordem_possivel(p_grafo g, MapaDisciplinas* mapa, int* ordem, int t
  * Lista disciplinas que podem ser cursadas dado um conjunto de disciplinas ja concluidas
  */
 void disciplinas_podem_cursar(p_grafo g, MapaDisciplinas* mapa, int* concluidas) {
-    printf("\n=== Disciplinas Disponiveis para Cursar ===\n");
+    printf("\nDisciplinas disponiveis para cursar\n");
     int count = 0;
 
     for (int i = 0; i < mapa->total; i++) {
@@ -218,7 +212,7 @@ int main(void) {
     imprimir_dependentes(g, mapa);
 
     // Testa ordem das disciplinas do 1o ano, 1o semestre
-    printf("\n\n=== TESTE 1: Disciplinas do 1o Ano, 1o Semestre ===\n");
+    printf("\n\nDisciplinas do 1o ano, 1o semestre\n");
     printf("Estas disciplinas nao têm pre-requisitos, podem ser cursadas em qualquer ordem.\n");
     int ordem1[] = {0, 1, 2, 3, 4, 5};  // Primeiras 6 disciplinas
     printf("Ordem testada: ");
@@ -231,7 +225,7 @@ int main(void) {
     }
 
     // Simula estudante que concluiu 1o ano
-    printf("\n\n=== TESTE 2: Apos Concluir 1o Ano ===\n");
+    printf("\n\nApos Concluir 1o Ano\n");
     int* concluidas = calloc(mapa->total, sizeof(int));
     // Marca disciplinas do 1o ano como concluidas
     for (int i = 0; i < mapa->total; i++) {
@@ -242,7 +236,7 @@ int main(void) {
     disciplinas_podem_cursar(g, mapa, concluidas);
 
     // Encontra componentes conexas (disciplinas relacionadas)
-    printf("\n\n=== TESTE 3: Componentes Conexas ===\n");
+    printf("\n\nComponentes Conexas\n");
     int* componentes = EncontraComponentes(g);
     printf("Analise de componentes conexas do grafo (desconsiderando direcao):\n");
     int max_comp = 0;
@@ -252,7 +246,7 @@ int main(void) {
     printf("Total de componentes: %d\n", max_comp + 1);
 
     // Busca em largura a partir de uma disciplina base
-    printf("\n\n=== TESTE 4: Busca em Largura ===\n");
+    printf("\n\nBusca em Largura\n");
     int idx_atp1 = buscar_indice_disciplina(mapa, "CIC002MAT3");  // Algoritmos I
     if (idx_atp1 != -1) {
         printf("Disciplinas alcancaveis a partir de %s:\n", mapa->disciplinas[idx_atp1].nome);
@@ -274,29 +268,38 @@ int main(void) {
         free(pai_bfs);
     }
 
-    // Disciplinas mais importantes (maior grau de saida)
-    printf("\n\n=== TESTE 5: Disciplinas Mais Importantes ===\n");
-    printf("(aquelas que sao pre-requisito para mais disciplinas)\n\n");
-    int max_grau = 0;
+    // Disciplinas com mais pre-requisitos (maior grau de entrada)
+    printf("\n\nDisciplinas com mais pre-requisitos\n");
+    printf("(aquelas que exigem mais disciplinas antes)\n\n");
+    int max_prereqs = 0;
     for (int i = 0; i < mapa->total; i++) {
-        int grau = Grau(g, i);
-        if (grau > max_grau) max_grau = grau;
+        int num_prereqs = 0;
+        // Conta quantos pre-requisitos esta disciplina tem (grau de entrada)
+        for (int j = 0; j < g->n; j++) {
+            if (TemAresta(g, j, i)) {
+                num_prereqs++;
+            }
+        }
+        if (num_prereqs > max_prereqs) max_prereqs = num_prereqs;
     }
 
     for (int i = 0; i < mapa->total; i++) {
-        int grau = Grau(g, i);
-        if (grau == max_grau && grau > 0) {
+        int num_prereqs = 0;
+        // Conta quantos pre-requisitos esta disciplina tem
+        for (int j = 0; j < g->n; j++) {
+            if (TemAresta(g, j, i)) {
+                num_prereqs++;
+            }
+        }
+        if (num_prereqs == max_prereqs && num_prereqs > 0) {
             printf("  %s - %s\n", mapa->disciplinas[i].codigo, mapa->disciplinas[i].nome);
-            printf(" -> e pre-requisito (direto ou indireto) para %d disciplinas\n\n", grau);
+            printf(" -> requer %d pre-requisitos diretos\n\n", num_prereqs);
         }
     }
 
-    // Cleanup
     free(componentes);
     free(concluidas);
     DestroiGrafo(g);
     liberar_mapa(mapa);
-
-    printf("\n=== Programa Finalizado ===\n");
     return 0;
 }
