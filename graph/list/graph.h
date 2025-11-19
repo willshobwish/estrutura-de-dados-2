@@ -55,4 +55,7 @@ void diminuiprioridade(p_fp h, int vertice, int nova_prioridade);
 
 // Algoritmo de Dijkstra
 int* dijkstra(p_grafo g, int s);
+
+// Algoritmo de Prim (Arvore Geradora Minima)
+int* prim(p_grafo g, int s);
 #endif

@@ -287,6 +287,72 @@ void dijkstraDistancias() {
     DestroiGrafo(g);
 }
 
+void primBasico() {
+    p_grafo g = CriarGrafo(5);
+
+    InsereArestaPonderada(g, 0, 1, 2);
+    InsereArestaPonderada(g, 0, 3, 6);
+    InsereArestaPonderada(g, 1, 2, 3);
+    InsereArestaPonderada(g, 1, 3, 8);
+    InsereArestaPonderada(g, 1, 4, 5);
+    InsereArestaPonderada(g, 2, 4, 7);
+    InsereArestaPonderada(g, 3, 4, 9);
+
+    printf("\nGrafo ponderado:\n");
+    printf("Arestas: 0-1(2), 0-3(6), 1-2(3), 1-3(8), 1-4(5), 2-4(7), 3-4(9)\n");
+
+    printf("\nArvore Geradora Minima (Prim) a partir do vertice 0:\n");
+    int* pai = prim(g, 0);
+
+    printf("\nArestas da MST:\n");
+    for (int i = 0; i < g->n; i++) {
+        if (pai[i] != -1 && pai[i] != i) {
+            printf("Aresta: %d - %d\n", pai[i], i);
+        }
+    }
+
+    free(pai);
+    DestroiGrafo(g);
+}
+
+void primComparacao() {
+    p_grafo g = CriarGrafo(4);
+
+    InsereArestaPonderada(g, 0, 1, 1);
+    InsereArestaPonderada(g, 0, 2, 4);
+    InsereArestaPonderada(g, 0, 3, 3);
+    InsereArestaPonderada(g, 1, 2, 2);
+    InsereArestaPonderada(g, 2, 3, 5);
+
+    printf("\nGrafo: 0-1(1), 0-2(4), 0-3(3), 1-2(2), 2-3(5)\n");
+
+    printf("\nComparacao: Prim vs Dijkstra\n");
+
+    printf("\nPrim (Arvore Geradora Minima):\n");
+    int* pai_prim = prim(g, 0);
+    printf("Arestas selecionadas:\n");
+    for (int i = 0; i < g->n; i++) {
+        if (pai_prim[i] != -1 && pai_prim[i] != i) {
+            printf("  %d - %d\n", pai_prim[i], i);
+        }
+    }
+
+    printf("\nDijkstra (Caminhos Minimos):\n");
+    int* pai_dijkstra = dijkstra(g, 0);
+    printf("Caminhos da origem:\n");
+    for (int i = 0; i < g->n; i++) {
+        if (pai_dijkstra[i] != -1 && pai_dijkstra[i] != i) {
+            printf("  Para %d: ", i);
+            imprimeCaminho(pai_dijkstra, i);
+            printf("\n");
+        }
+    }
+
+    free(pai_prim);
+    free(pai_dijkstra);
+    DestroiGrafo(g);
+}
+
 int main(void) {
     printf("Analise de Grau e Popularidade\n");
     grauPopularidade();
@@ -317,5 +383,13 @@ int main(void) {
 
     printf("\n\nDijkstra - Analise de Distancias\n");
     dijkstraDistancias();
+
+    printf("\n\nAlgoritmo de Prim (MST)\n");
+    primBasico();
+
+    printf("\n\nPrim vs Dijkstra\n");
+    primComparacao();
+
+    printf("\n\nPrograma finalizado.\n");
     return 0;
 }

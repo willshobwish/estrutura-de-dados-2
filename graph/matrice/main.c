@@ -266,6 +266,99 @@ void buscaLargura() {
     DestroiGrafo(g);
 }
 
+void primBasico() {
+    p_grafo g = CriarGrafo(5);
+
+    // Para matriz, precisamos inserir os pesos diretamente
+    g->adj[0][1] = g->adj[1][0] = 2;
+    g->adj[0][3] = g->adj[3][0] = 6;
+    g->adj[1][2] = g->adj[2][1] = 3;
+    g->adj[1][3] = g->adj[3][1] = 8;
+    g->adj[1][4] = g->adj[4][1] = 5;
+    g->adj[2][4] = g->adj[4][2] = 7;
+    g->adj[3][4] = g->adj[4][3] = 9;
+
+    printf("\nGrafo ponderado:\n");
+    printf("Arestas: 0-1(2), 0-3(6), 1-2(3), 1-3(8), 1-4(5), 2-4(7), 3-4(9)\n");
+
+    printf("\nArvore Geradora Minima (Prim) a partir do vertice 0:\n");
+    int* pai = prim(g, 0);
+
+    printf("\nArestas da MST:\n");
+    for (int i = 0; i < g->n; i++) {
+        if (pai[i] != -1 && pai[i] != i) {
+            printf("Aresta: %d - %d (peso: %d)\n", pai[i], i, g->adj[pai[i]][i]);
+        }
+    }
+
+    free(pai);
+    DestroiGrafo(g);
+}
+
+void primGrafoCompleto() {
+    p_grafo g = CriarGrafo(4);
+
+    // Grafo completo com pesos variados
+    g->adj[0][1] = g->adj[1][0] = 1;
+    g->adj[0][2] = g->adj[2][0] = 4;
+    g->adj[0][3] = g->adj[3][0] = 3;
+    g->adj[1][2] = g->adj[2][1] = 2;
+    g->adj[1][3] = g->adj[3][1] = 5;
+    g->adj[2][3] = g->adj[3][2] = 6;
+
+    printf("\nGrafo completo K4 ponderado:\n");
+    printf("Arestas: 0-1(1), 0-2(4), 0-3(3), 1-2(2), 1-3(5), 2-3(6)\n");
+
+    printf("\nArvore Geradora Minima (Prim):\n");
+    int* pai = prim(g, 0);
+
+    printf("\nArestas selecionadas:\n");
+    int custo_total = 0;
+    for (int i = 0; i < g->n; i++) {
+        if (pai[i] != -1 && pai[i] != i) {
+            int peso = g->adj[pai[i]][i];
+            printf("  %d - %d (peso: %d)\n", pai[i], i, peso);
+            custo_total += peso;
+        }
+    }
+    printf("\nCusto total da MST: %d\n", custo_total);
+
+    free(pai);
+    DestroiGrafo(g);
+}
+
+void primDesconexo() {
+    p_grafo g = CriarGrafo(6);
+
+    // Componente 1: vertices 0, 1, 2
+    g->adj[0][1] = g->adj[1][0] = 3;
+    g->adj[1][2] = g->adj[2][1] = 2;
+    g->adj[0][2] = g->adj[2][0] = 5;
+
+    // Componente 2: vertices 3, 4, 5
+    g->adj[3][4] = g->adj[4][3] = 1;
+    g->adj[4][5] = g->adj[5][4] = 4;
+
+    printf("\nGrafo desconexo:\n");
+    printf("Componente 1: 0-1(3), 1-2(2), 0-2(5)\n");
+    printf("Componente 2: 3-4(1), 4-5(4)\n");
+
+    printf("\nPrim a partir do vertice 0 (só alcanca componente 1):\n");
+    int* pai = prim(g, 0);
+
+    printf("\nArestas da MST:\n");
+    for (int i = 0; i < g->n; i++) {
+        if (pai[i] == -1) {
+            printf("Vertice %d: nao alcancavel\n", i);
+        } else if (pai[i] != i) {
+            printf("  %d - %d (peso: %d)\n", pai[i], i, g->adj[pai[i]][i]);
+        }
+    }
+
+    free(pai);
+    DestroiGrafo(g);
+}
+
 int main(void) {
     printf("Operacões Basicas de Grafos\n");
     operacoesBasicas();
@@ -290,5 +383,16 @@ int main(void) {
 
     printf("\n\nBusca em Largura\n");
     buscaLargura();
+
+    printf("\n\nAlgoritmo de Prim (MST)\n");
+    primBasico();
+
+    printf("\n\nPrim em Grafo Completo\n");
+    primGrafoCompleto();
+
+    printf("\n\nPrim em Grafo Desconexo\n");
+    primDesconexo();
+
+    printf("\n\nPrograma finalizado.\n");
     return 0;
 }

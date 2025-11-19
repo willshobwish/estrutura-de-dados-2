@@ -544,3 +544,63 @@ int* dijkstra(p_grafo g, int s) {
     free(dist);
     return pai;
 }
+
+/*
+ * Funcao prim
+ * Implementa o algoritmo de Prim para encontrar a Arvore Geradora Minima (MST)
+ * g: grafo com arestas ponderadas
+ * s: vertice inicial (pode ser qualquer vertice do grafo)
+ * Retorna: array de pais representando a MST
+ *          pai[v] = -1 se v nao eh alcancavel de s (grafo desconexo)
+ *          pai[v] = v se v eh a raiz (vertice inicial)
+ *          pai[v] = u significa que a aresta (u,v) faz parte da MST
+ *
+ * DIFERENCA entre Prim e Dijkstra:
+ * - Dijkstra: minimiza a DISTANCIA TOTAL da origem ate cada vertice
+ * - Prim: minimiza o PESO DA ARESTA que conecta cada vertice a arvore
+ */
+int* prim(p_grafo g, int s) {
+    int v, *pai = malloc(g->n * sizeof(int));
+    int* custo = malloc(g->n * sizeof(int));   // Custo minimo para conectar cada vertice
+    int* na_mst = malloc(g->n * sizeof(int));  // Marca vertices ja incluidos na MST
+    p_no t;
+    p_fp h = criar_fprio(g->n);
+
+    // Inicializa todos os vertices
+    for (v = 0; v < g->n; v++) {
+        pai[v] = -1;
+        custo[v] = INT_MAX;
+        na_mst[v] = 0;  // Nenhum vertice na MST ainda
+        insere(h, v, INT_MAX);
+    }
+
+    // Define o vertice inicial
+    pai[s] = s;
+    custo[s] = 0;
+    diminuiprioridade(h, s, 0);
+
+    // Processa vertices em ordem de custo crescente
+    while (!vazia(h)) {
+        v = extrai_minimo(h);
+        na_mst[v] = 1;  // Adiciona v a MST
+
+        // Se o custo eh infinito, vertices restantes sao inalcancaveis
+        if (custo[v] != INT_MAX) {
+            // Examina todas as arestas saindo de v
+            for (t = g->adjacencia[v]; t != NULL; t = t->prox) {
+                // Se t->v ainda nao esta na MST e a aresta (v, t->v) tem peso menor
+                if (!na_mst[t->v] && t->peso < custo[t->v]) {
+                    // DIFERENCA CHAVE: usamos t->peso diretamente, nao custo[v] + t->peso
+                    custo[t->v] = t->peso;
+                    diminuiprioridade(h, t->v, t->peso);
+                    pai[t->v] = v;  // v eh o pai de t->v na MST
+                }
+            }
+        }
+    }
+
+    destroi_fprio(h);
+    free(custo);
+    free(na_mst);
+    return pai;
+}

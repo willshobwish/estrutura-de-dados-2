@@ -1,5 +1,6 @@
 #include "graph.h"  // Inclui o cabeçalho com a definição da estrutura 'Grafo' e as funções declaradas
 
+#include <limits.h>  // Inclui constantes como INT_MAX
 #include <stdio.h>   // Inclui funções de entrada/saída, como printf e scanf
 #include <stdlib.h>  // Inclui funções de alocação e liberação de memória (malloc, free)
 
@@ -465,5 +466,67 @@ int* busca_em_largura(p_grafo g, int s) {
 
     destroi_fila(f);
     free(visitado);
+    return pai;
+}
+
+/*
+ * Funcao prim
+ * Implementa o algoritmo de Prim para encontrar a Arvore Geradora Minima (MST)
+ * usando matriz de adjacencia
+ * g: grafo com arestas ponderadas (matriz contem os pesos, 0 = sem aresta)
+ * s: vertice inicial
+ * Retorna: array de pais representando a MST
+ *          pai[v] = -1 se v nao eh alcancavel de s
+ *          pai[v] = v se v eh a raiz
+ *          pai[v] = u significa que a aresta (u,v) faz parte da MST
+ */
+int* prim(p_grafo g, int s) {
+    int v, w, *pai = malloc(g->n * sizeof(int));
+    int* custo = malloc(g->n * sizeof(int));   // Custo minimo para conectar cada vertice
+    int* na_mst = malloc(g->n * sizeof(int));  // Marca vertices ja incluidos na MST
+
+    // Inicializa todos os vertices
+    for (v = 0; v < g->n; v++) {
+        pai[v] = -1;
+        custo[v] = INT_MAX;
+        na_mst[v] = 0;
+    }
+
+    // Define o vertice inicial
+    pai[s] = s;
+    custo[s] = 0;
+
+    // Processa todos os vertices
+    for (int i = 0; i < g->n; i++) {
+        // Encontra o vertice com menor custo que ainda nao esta na MST
+        int min_custo = INT_MAX;
+        int u = -1;
+        for (v = 0; v < g->n; v++) {
+            if (!na_mst[v] && custo[v] < min_custo) {
+                min_custo = custo[v];
+                u = v;
+            }
+        }
+
+        // Se nao encontrou vertice alcancavel, o grafo eh desconexo
+        if (u == -1) {
+            break;
+        }
+
+        // Adiciona u a MST
+        na_mst[u] = 1;
+
+        // Atualiza os custos dos vizinhos de u
+        for (w = 0; w < g->n; w++) {
+            // Se existe aresta (u,w), w nao esta na MST e o peso eh menor
+            if (g->adj[u][w] != 0 && !na_mst[w] && g->adj[u][w] < custo[w]) {
+                custo[w] = g->adj[u][w];
+                pai[w] = u;
+            }
+        }
+    }
+
+    free(custo);
+    free(na_mst);
     return pai;
 }
