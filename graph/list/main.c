@@ -12,351 +12,310 @@ void imprimeCaminho(int* pai, int destino) {
     printf(" -> %d", destino);
 }
 
-int main(void) {
-    printf("\n=== TESTE 1: Grau ===\n");
-    p_grafo g1 = CriarGrafo(5);
-    InsereAresta(g1, 0, 1);
-    InsereAresta(g1, 0, 2);
-    InsereAresta(g1, 0, 3);
-    InsereAresta(g1, 1, 2);
+void grauPopularidade() {
+    p_grafo g = CriarGrafo(5);
+    InsereAresta(g, 0, 1);
+    InsereAresta(g, 0, 2);
+    InsereAresta(g, 0, 3);
+    InsereAresta(g, 1, 2);
 
-    printf("Grafo 1 - Arestas:\n");
-    ImprimeArestas(g1);
+    printf("Grafo criado:\n");
+    ImprimeArestas(g);
     printf("\nGraus dos vertices:\n");
-    for (int i = 0; i < g1->n; i++) {
-        printf("Vertice %d: grau %d\n", i, Grau(g1, i));
+    for (int i = 0; i < g->n; i++) {
+        printf("Vertice %d: grau %d\n", i, Grau(g, i));
     }
 
-    printf("\n=== TESTE 2: MaisPopular ===\n");
-    int popular = MaisPopular(g1);
-    printf("Vértice mais popular: %d (grau %d)\n", popular, Grau(g1, popular));
+    int popular = MaisPopular(g);
+    printf("\nVertice mais popular: %d com grau %d\n", popular, Grau(g, popular));
 
-    DestroiGrafo(g1);
+    DestroiGrafo(g);
+}
 
-    printf("\n=== TESTE 3: ImprimeRecomendacoes ===\n");
-    p_grafo g2 = CriarGrafo(6);
-    // Cria uma rede social: 0-1-2-3, 1-4, 2-5
-    InsereAresta(g2, 0, 1);
-    InsereAresta(g2, 1, 2);
-    InsereAresta(g2, 2, 3);
-    InsereAresta(g2, 1, 4);
-    InsereAresta(g2, 2, 5);
+void recomendacoes() {
+    p_grafo g = CriarGrafo(6);
+    InsereAresta(g, 0, 1);
+    InsereAresta(g, 1, 2);
+    InsereAresta(g, 2, 3);
+    InsereAresta(g, 1, 4);
+    InsereAresta(g, 2, 5);
 
-    printf("Grafo 2 - Arestas:\n");
-    ImprimeArestas(g2);
-    printf("\nRecomendações para o vértice 0 (amigos de amigos):\n");
-    ImprimeRecomendacoes(g2, 0);
+    printf("\nEstrutura da rede social:\n");
+    ImprimeArestas(g);
 
-    printf("\nRecomendações para o vértice 1:\n");
-    ImprimeRecomendacoes(g2, 1);
+    printf("\nRecomendacoes para o vertice 0:\n");
+    ImprimeRecomendacoes(g, 0);
 
-    DestroiGrafo(g2);
+    printf("\nRecomendacoes para o vertice 1:\n");
+    ImprimeRecomendacoes(g, 1);
 
-    printf("\n=== TESTE 4: EncontraComponentes ===\n");
-    p_grafo g3 = CriarGrafo(7);
-    // Cria três componentes: {0,1,2}, {3,4}, {5,6}
-    InsereAresta(g3, 0, 1);
-    InsereAresta(g3, 1, 2);
-    InsereAresta(g3, 3, 4);
-    InsereAresta(g3, 5, 6);
+    DestroiGrafo(g);
+}
 
-    printf("Grafo 3 - Arestas:\n");
-    ImprimeArestas(g3);
+void componentesConexas() {
+    p_grafo g = CriarGrafo(7);
+    InsereAresta(g, 0, 1);
+    InsereAresta(g, 1, 2);
+    InsereAresta(g, 3, 4);
+    InsereAresta(g, 5, 6);
 
-    int* componentes = EncontraComponentes(g3);
-    printf("\nComponentes conexas:\n");
-    for (int i = 0; i < g3->n; i++) {
-        printf("Vértice %d: componente %d\n", i, componentes[i]);
+    printf("\nGrafo com componentes separadas:\n");
+    ImprimeArestas(g);
+
+    int* componentes = EncontraComponentes(g);
+    printf("\nComponentes conexas identificadas:\n");
+    for (int i = 0; i < g->n; i++) {
+        printf("Vertice %d pertence ao componente %d\n", i, componentes[i]);
     }
 
     free(componentes);
-    DestroiGrafo(g3);
+    DestroiGrafo(g);
+}
 
-    printf("\n=== TESTE 5: Grafo Completo ===\n");
-    p_grafo g4 = CriarGrafo(4);
-    // Cria um grafo completo K4
+void grafoCompleto() {
+    p_grafo g = CriarGrafo(4);
     for (int i = 0; i < 4; i++) {
         for (int j = i + 1; j < 4; j++) {
-            InsereAresta(g4, i, j);
+            InsereAresta(g, i, j);
         }
     }
 
-    printf("Grafo 4 (K4) - Todos os graus devem ser 3:\n");
-    for (int i = 0; i < g4->n; i++) {
-        printf("Vértice %d: grau %d\n", i, Grau(g4, i));
+    printf("\nGrafo completo K4:\n");
+    for (int i = 0; i < g->n; i++) {
+        printf("Vertice %d: grau %d\n", i, Grau(g, i));
     }
 
-    int* comp4 = EncontraComponentes(g4);
-    printf("\nTodos devem estar no mesmo componente:\n");
-    for (int i = 0; i < g4->n; i++) {
-        printf("Vértice %d: componente %d\n", i, comp4[i]);
+    int* comp = EncontraComponentes(g);
+    printf("\nTodos os vertices no mesmo componente:\n");
+    for (int i = 0; i < g->n; i++) {
+        printf("Vertice %d: componente %d\n", i, comp[i]);
     }
 
-    free(comp4);
-    DestroiGrafo(g4);
+    free(comp);
+    DestroiGrafo(g);
+}
 
-    printf("\n=== TESTE 6: encontraCaminhos ===\n");
-    p_grafo g5 = CriarGrafo(8);
-    // Cria um grafo com estrutura de árvore e componentes separadas
-    // Componente 1: 0-1-2, 1-3
-    InsereAresta(g5, 0, 1);
-    InsereAresta(g5, 1, 2);
-    InsereAresta(g5, 1, 3);
+void buscaProfundidade() {
+    p_grafo g = CriarGrafo(8);
+    InsereAresta(g, 0, 1);
+    InsereAresta(g, 1, 2);
+    InsereAresta(g, 1, 3);
+    InsereAresta(g, 4, 5);
+    InsereAresta(g, 5, 6);
 
-    // Componente 2: 4-5-6
-    InsereAresta(g5, 4, 5);
-    InsereAresta(g5, 5, 6);
+    printf("\nGrafo com multiplas componentes:\n");
+    ImprimeArestas(g);
 
-    // Vértice isolado: 7
-
-    printf("Grafo 5 - Arestas:\n");
-    ImprimeArestas(g5);
-
-    printf("\nBusca em profundidade a partir do vértice 0:\n");
-    int* pai0 = encontraCaminhos(g5, 0);
-    printf("\nÁrvore de caminhos (vetor pai) a partir de 0:\n");
-    for (int i = 0; i < g5->n; i++) {
+    printf("\nBusca a partir do vertice 0:\n");
+    int* pai0 = encontraCaminhos(g, 0);
+    for (int i = 0; i < g->n; i++) {
         if (pai0[i] == -1) {
-            printf("Vértice %d: não alcançável (pai = -1)\n", i);
+            printf("Vertice %d: nao alcancavel\n", i);
         } else if (pai0[i] == i) {
-            printf("Vértice %d: raiz da busca (pai = %d)\n", i, pai0[i]);
+            printf("Vertice %d: raiz da busca\n", i);
         } else {
-            printf("Vértice %d: pai = %d, caminho: ", i, pai0[i]);
+            printf("Vertice %d: caminho ", i);
             imprimeCaminho(pai0, i);
             printf("\n");
         }
     }
 
-    printf("\n\nBusca em profundidade a partir do vértice 4:\n");
-    int* pai4 = encontraCaminhos(g5, 4);
-    printf("\nÁrvore de caminhos (vetor pai) a partir de 4:\n");
-    for (int i = 0; i < g5->n; i++) {
+    printf("\nBusca a partir do vertice 4:\n");
+    int* pai4 = encontraCaminhos(g, 4);
+    for (int i = 0; i < g->n; i++) {
         if (pai4[i] == -1) {
-            printf("Vértice %d: não alcançável (pai = -1)\n", i);
+            printf("Vertice %d: nao alcancavel\n", i);
         } else if (pai4[i] == i) {
-            printf("Vértice %d: raiz da busca (pai = %d)\n", i, pai4[i]);
+            printf("Vertice %d: raiz da busca\n", i);
         } else {
-            printf("Vértice %d: pai = %d, caminho: ", i, pai4[i]);
+            printf("Vertice %d: caminho ", i);
             imprimeCaminho(pai4, i);
             printf("\n");
         }
     }
 
-    printf("\n\nBusca em profundidade a partir do vértice 7 (isolado):\n");
-    int* pai7 = encontraCaminhos(g5, 7);
-    printf("\nÁrvore de caminhos (vetor pai) a partir de 7:\n");
-    for (int i = 0; i < g5->n; i++) {
-        if (pai7[i] == -1) {
-            printf("Vértice %d: não alcançável (pai = -1)\n", i);
-        } else if (pai7[i] == i) {
-            printf("Vértice %d: raiz da busca (pai = %d)\n", i, pai7[i]);
-        } else {
-            printf("Vértice %d: pai = %d\n", i, pai7[i]);
-        }
-    }
-
     free(pai0);
     free(pai4);
-    free(pai7);
-    DestroiGrafo(g5);
+    DestroiGrafo(g);
+}
 
-    printf("\n=== TESTE 7: encontraCaminhos em Grafo Cíclico ===\n");
-    p_grafo g6 = CriarGrafo(5);
-    // Cria um ciclo: 0-1-2-3-4-0
-    InsereAresta(g6, 0, 1);
-    InsereAresta(g6, 1, 2);
-    InsereAresta(g6, 2, 3);
-    InsereAresta(g6, 3, 4);
-    InsereAresta(g6, 4, 0);
-    // Adiciona uma aresta transversal
-    InsereAresta(g6, 1, 4);
+void buscaGrafoCiclico() {
+    p_grafo g = CriarGrafo(5);
+    InsereAresta(g, 0, 1);
+    InsereAresta(g, 1, 2);
+    InsereAresta(g, 2, 3);
+    InsereAresta(g, 3, 4);
+    InsereAresta(g, 4, 0);
+    InsereAresta(g, 1, 4);
 
-    printf("Grafo 6 (cíclico) - Arestas:\n");
-    ImprimeArestas(g6);
+    printf("\nGrafo ciclico:\n");
+    ImprimeArestas(g);
 
-    printf("\nBusca em profundidade a partir do vértice 0:\n");
-    int* pai_ciclo = encontraCaminhos(g6, 0);
-    printf("\nÁrvore de caminhos no grafo cíclico:\n");
-    for (int i = 0; i < g6->n; i++) {
-        if (pai_ciclo[i] == i) {
-            printf("Vértice %d: raiz (pai = %d)\n", i, pai_ciclo[i]);
+    printf("\nBusca a partir do vertice 0:\n");
+    int* pai = encontraCaminhos(g, 0);
+    for (int i = 0; i < g->n; i++) {
+        if (pai[i] == i) {
+            printf("Vertice %d: raiz\n", i);
         } else {
-            printf("Vértice %d: pai = %d, caminho: ", i, pai_ciclo[i]);
-            imprimeCaminho(pai_ciclo, i);
+            printf("Vertice %d: caminho ", i);
+            imprimeCaminho(pai, i);
             printf("\n");
         }
     }
 
-    free(pai_ciclo);
-    DestroiGrafo(g6);
+    free(pai);
+    DestroiGrafo(g);
+}
 
-    printf("\n=== TESTE 8: Algoritmo de Dijkstra ===\n");
-    p_grafo g7 = CriarGrafo(6);
-    /* Cria um grafo ponderado
-     * Exemplo baseado em um grafo clássico para Dijkstra
-     *     1
-     *   /   \
-     *  4     2
-     * 0       3
-     *  7     1
-     *   \   /
-     *     2
-     *     |
-     *     5
-     *     4
-     *     |
-     *     5
-     */
+void dijkstraBasico() {
+    p_grafo g = CriarGrafo(5);
+    InsereArestaPonderada(g, 0, 1, 4);
+    InsereArestaPonderada(g, 0, 2, 7);
+    InsereArestaPonderada(g, 1, 3, 2);
+    InsereArestaPonderada(g, 2, 3, 1);
+    InsereArestaPonderada(g, 2, 4, 5);
+    InsereArestaPonderada(g, 3, 4, 4);
 
-    InsereArestaPonderada(g7, 0, 1, 4);  // 0-1 peso 4
-    InsereArestaPonderada(g7, 0, 2, 7);  // 0-2 peso 7
-    InsereArestaPonderada(g7, 1, 3, 2);  // 1-3 peso 2
-    InsereArestaPonderada(g7, 2, 3, 1);  // 2-3 peso 1
-    InsereArestaPonderada(g7, 2, 4, 5);  // 2-4 peso 5
-    InsereArestaPonderada(g7, 3, 4, 4);  // 3-4 peso 4
+    printf("\nGrafo ponderado:\n");
+    printf("Arestas: 0-1(4), 0-2(7), 1-3(2), 2-3(1), 2-4(5), 3-4(4)\n");
 
-    printf("Grafo 7 (ponderado) - Estrutura:\n");
-    printf("Vertices: 0, 1, 2, 3, 4\n");
-    printf("Arestas com pesos:\n");
-    printf("  0-1 (peso 4)\n");
-    printf("  0-2 (peso 7)\n");
-    printf("  1-3 (peso 2)\n");
-    printf("  2-3 (peso 1)\n");
-    printf("  2-4 (peso 5)\n");
-    printf("  3-4 (peso 4)\n");
+    printf("\nCaminhos minimos a partir do vertice 0:\n");
+    int* pai = dijkstra(g, 0);
 
-    printf("\nExecutando Dijkstra a partir do vértice 0:\n");
-    int* pai_dijkstra = dijkstra(g7, 0);
-
-    printf("\nCaminhos mínimos a partir de 0:\n");
-    for (int i = 0; i < g7->n; i++) {
-        if (pai_dijkstra[i] == -1) {
-            printf("Vértice %d: não alcançável\n", i);
-        } else if (pai_dijkstra[i] == i) {
-            printf("Vértice %d: origem (distância 0)\n", i);
+    for (int i = 0; i < g->n; i++) {
+        if (pai[i] == -1) {
+            printf("Vertice %d: nao alcancavel\n", i);
+        } else if (pai[i] == i) {
+            printf("Vertice %d: origem\n", i);
         } else {
-            printf("Vértice %d: pai = %d, caminho: ", i, pai_dijkstra[i]);
-            imprimeCaminho(pai_dijkstra, i);
+            printf("Vertice %d: ", i);
+            imprimeCaminho(pai, i);
             printf("\n");
         }
     }
 
-    free(pai_dijkstra);
+    free(pai);
+    DestroiGrafo(g);
+}
 
-    printf("\n=== TESTE 9: Dijkstra com Componentes Desconexas ===\n");
-    p_grafo g8 = CriarGrafo(7);
-    // Componente 1: 0-1-2 (conectado)
-    InsereArestaPonderada(g8, 0, 1, 3);
-    InsereArestaPonderada(g8, 1, 2, 5);
+void dijkstraComponentesDesconexas() {
+    p_grafo g = CriarGrafo(7);
+    InsereArestaPonderada(g, 0, 1, 3);
+    InsereArestaPonderada(g, 1, 2, 5);
+    InsereArestaPonderada(g, 3, 4, 2);
+    InsereArestaPonderada(g, 4, 5, 1);
 
-    // Componente 2: 3-4-5 (desconectado da componente 1)
-    InsereArestaPonderada(g8, 3, 4, 2);
-    InsereArestaPonderada(g8, 4, 5, 1);
+    printf("\nGrafo com componentes desconexas:\n");
+    printf("Componente A: 0-1-2\n");
+    printf("Componente B: 3-4-5\n");
+    printf("Vertice isolado: 6\n");
 
-    // Vértice isolado: 6
-
-    printf("Grafo 8 - Duas componentes separadas:\n");
-    printf("Componente 1: 0-1-2\n");
-    printf("Componente 2: 3-4-5\n");
-    printf("Vértice isolado: 6\n");
-
-    printf("\nDijkstra a partir do vértice 0:\n");
-    int* pai_dijkstra2 = dijkstra(g8, 0);
-    for (int i = 0; i < g8->n; i++) {
-        if (pai_dijkstra2[i] == -1) {
-            printf("Vértice %d: não alcançável\n", i);
-        } else if (pai_dijkstra2[i] == i) {
-            printf("Vértice %d: origem\n", i);
+    printf("\nDijkstra a partir do vertice 0:\n");
+    int* pai = dijkstra(g, 0);
+    for (int i = 0; i < g->n; i++) {
+        if (pai[i] == -1) {
+            printf("Vertice %d: nao alcancavel\n", i);
+        } else if (pai[i] == i) {
+            printf("Vertice %d: origem\n", i);
         } else {
-            printf("Vértice %d: pai = %d, caminho: ", i, pai_dijkstra2[i]);
-            imprimeCaminho(pai_dijkstra2, i);
+            printf("Vertice %d: ", i);
+            imprimeCaminho(pai, i);
             printf("\n");
         }
     }
 
-    free(pai_dijkstra2);
-    DestroiGrafo(g7);
-    DestroiGrafo(g8);
+    free(pai);
+    DestroiGrafo(g);
+}
 
-    printf("\n=== TESTE 10: Dijkstra - Grafo Completo Ponderado ===\n");
-    p_grafo g9 = CriarGrafo(4);
-    // Grafo completo K4 com pesos diferentes
-    InsereArestaPonderada(g9, 0, 1, 1);
-    InsereArestaPonderada(g9, 0, 2, 4);
-    InsereArestaPonderada(g9, 0, 3, 10);
-    InsereArestaPonderada(g9, 1, 2, 2);
-    InsereArestaPonderada(g9, 1, 3, 5);
-    InsereArestaPonderada(g9, 2, 3, 3);
+void dijkstraGrafoCompleto() {
+    p_grafo g = CriarGrafo(4);
+    InsereArestaPonderada(g, 0, 1, 1);
+    InsereArestaPonderada(g, 0, 2, 4);
+    InsereArestaPonderada(g, 0, 3, 10);
+    InsereArestaPonderada(g, 1, 2, 2);
+    InsereArestaPonderada(g, 1, 3, 5);
+    InsereArestaPonderada(g, 2, 3, 3);
 
-    printf("Grafo 9 - K4 ponderado:\n");
-    printf("  0-1 (peso 1), 0-2 (peso 4), 0-3 (peso 10)\n");
-    printf("  1-2 (peso 2), 1-3 (peso 5)\n");
-    printf("  2-3 (peso 3)\n");
+    printf("\nGrafo completo ponderado K4:\n");
+    printf("Arestas: 0-1(1), 0-2(4), 0-3(10), 1-2(2), 1-3(5), 2-3(3)\n");
 
-    printf("\nDijkstra a partir do vértice 0:\n");
-    int* pai_dijkstra3 = dijkstra(g9, 0);
+    printf("\nCaminhos minimos a partir do vertice 0:\n");
+    int* pai = dijkstra(g, 0);
 
-    printf("Árvore de caminhos mínimos:\n");
-    for (int i = 0; i < g9->n; i++) {
-        if (pai_dijkstra3[i] == i) {
-            printf("Vértice %d: origem\n", i);
+    for (int i = 0; i < g->n; i++) {
+        if (pai[i] == i) {
+            printf("Vertice %d: origem\n", i);
         } else {
-            printf("Vértice %d: pai = %d, caminho: ", i, pai_dijkstra3[i]);
-            imprimeCaminho(pai_dijkstra3, i);
+            printf("Vertice %d: ", i);
+            imprimeCaminho(pai, i);
             printf("\n");
         }
     }
 
-    printf("\nDistâncias esperadas de 0:\n");
-    printf("  0->1: 1 (direto)\n");
-    printf("  0->2: 3 (via 1: 0->1->2)\n");
-    printf("  0->3: 6 (via 1 e 2: 0->1->2->3)\n");
+    free(pai);
+    DestroiGrafo(g);
+}
 
-    free(pai_dijkstra3);
-    DestroiGrafo(g9);
+void dijkstraDistancias() {
+    p_grafo g = CriarGrafo(5);
+    InsereArestaPonderada(g, 0, 1, 10);
+    InsereArestaPonderada(g, 0, 2, 5);
+    InsereArestaPonderada(g, 1, 3, 1);
+    InsereArestaPonderada(g, 2, 1, 3);
+    InsereArestaPonderada(g, 2, 3, 8);
+    InsereArestaPonderada(g, 2, 4, 2);
+    InsereArestaPonderada(g, 3, 4, 4);
 
-    printf("\n=== TESTE 11: Dijkstra com Distâncias ===\n");
-    p_grafo g10 = CriarGrafo(5);
-    // Cria um grafo para testar caminhos mínimos com distâncias explícitas
-    InsereArestaPonderada(g10, 0, 1, 10);
-    InsereArestaPonderada(g10, 0, 2, 5);
-    InsereArestaPonderada(g10, 1, 3, 1);
-    InsereArestaPonderada(g10, 2, 1, 3);
-    InsereArestaPonderada(g10, 2, 3, 8);
-    InsereArestaPonderada(g10, 2, 4, 2);
-    InsereArestaPonderada(g10, 3, 4, 4);
+    printf("\nGrafo para analise de distancias:\n");
+    printf("Arestas: 0-1(10), 0-2(5), 1-3(1), 2-1(3), 2-3(8), 2-4(2), 3-4(4)\n");
 
-    printf("Grafo 10 - Teste de distâncias:\n");
-    printf("  0-1 (peso 10), 0-2 (peso 5)\n");
-    printf("  1-3 (peso 1), 2-1 (peso 3)\n");
-    printf("  2-3 (peso 8), 2-4 (peso 2)\n");
-    printf("  3-4 (peso 4)\n");
+    printf("\nCaminhos encontrados a partir do vertice 0:\n");
+    int* pai = dijkstra(g, 0);
 
-    printf("\nDijkstra a partir do vértice 0:\n");
-    int* pai_dijkstra4 = dijkstra(g10, 0);
-
-    printf("Caminhos encontrados:\n");
-    for (int i = 0; i < g10->n; i++) {
-        if (pai_dijkstra4[i] == i) {
-            printf("Vértice %d: origem\n", i);
-        } else if (pai_dijkstra4[i] != -1) {
-            printf("Vértice %d: caminho: ", i);
-            imprimeCaminho(pai_dijkstra4, i);
+    for (int i = 0; i < g->n; i++) {
+        if (pai[i] == i) {
+            printf("Vertice %d: origem\n", i);
+        } else if (pai[i] != -1) {
+            printf("Vertice %d: ", i);
+            imprimeCaminho(pai, i);
             printf("\n");
         }
     }
 
-    printf("\nDistâncias esperadas (calculadas manualmente):\n");
-    printf("  0->0: 0\n");
-    printf("  0->1: 8 (via 2: 0->2->1, custo 5+3=8, melhor que direto 10)\n");
-    printf("  0->2: 5 (direto)\n");
-    printf("  0->3: 9 (via 2 e 1: 0->2->1->3, custo 5+3+1=9)\n");
-    printf("  0->4: 7 (via 2: 0->2->4, custo 5+2=7)\n");
+    free(pai);
+    DestroiGrafo(g);
+}
 
-    free(pai_dijkstra4);
-    DestroiGrafo(g10);
+int main(void) {
+    printf("Analise de Grau e Popularidade\n");
+    grauPopularidade();
 
-    printf("\n=== Todos os testes concluídos! ===\n");
+    printf("\n\nSistema de Recomendacoes\n");
+    recomendacoes();
 
+    printf("\n\nComponentes Conexas\n");
+    componentesConexas();
+
+    printf("\n\nGrafo Completo\n");
+    grafoCompleto();
+
+    printf("\n\nBusca em Profundidade\n");
+    buscaProfundidade();
+
+    printf("\n\nBusca em Grafo Ciclico\n");
+    buscaGrafoCiclico();
+
+    printf("\n\nAlgoritmo de Dijkstra Basico\n");
+    dijkstraBasico();
+
+    printf("\n\nDijkstra com Componentes Desconexas\n");
+    dijkstraComponentesDesconexas();
+
+    printf("\n\nDijkstra em Grafo Completo\n");
+    dijkstraGrafoCompleto();
+
+    printf("\n\nDijkstra - Analise de Distancias\n");
+    dijkstraDistancias();
     return 0;
 }

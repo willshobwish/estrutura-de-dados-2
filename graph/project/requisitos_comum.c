@@ -103,7 +103,7 @@ MapaDisciplinas* carregar_disciplinas(const char* arquivo) {
  * Imprime todas as disciplinas carregadas
  */
 void imprimir_mapa_disciplinas(MapaDisciplinas* mapa) {
-    printf("\n=== Disciplinas Carregadas ===\n");
+    printf("\nDisciplinas Carregadas\n");
     printf("Total: %d disciplinas\n\n", mapa->total);
     for (int i = 0; i < mapa->total; i++) {
         printf("[%2d] %s - %s (Ano %d, Sem %d)\n",

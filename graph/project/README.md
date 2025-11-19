@@ -11,12 +11,14 @@ project/
 ├── requisitos_matriz.c      # Implementação com matriz
 ├── requisitos_lista.c       # Implementação com lista
 ├── Makefile
-../matrice/                  # Biblioteca de grafos (matriz)
-│   ├── graph.h
-│   └── graph.c
-../list/                     # Biblioteca de grafos (lista)
-    ├── graph.h
-    └── graph.c
+matrice/                  # Biblioteca de grafos (matriz de adjacência)
+├── graph.h
+├── graph.c
+└── main.c               # Possui códigos para execução das funções implementadas
+list/                     # Biblioteca de grafos (lista de adjacência)
+├── graph.h
+├── graph.c
+└── main.c               # Possui códigos para execução das funções implementadas
 ```
 
 ## Funcionalidades
@@ -35,7 +37,6 @@ project/
 - Caminho completo de pré-requisitos para qualquer disciplina
 - Sugestão de ordem otimizada (ordenação topológica)
 - Estatísticas completas do grafo
-
 
 ## Como a teoria dos grafos foi utilizado no projeto
 
@@ -60,7 +61,7 @@ make run-matriz
 make run-lista
 make run-all
 
-# Limpar
+# Limpar (funciona apenas no Linux por causa do comando rm)
 make clean
 ```
 
