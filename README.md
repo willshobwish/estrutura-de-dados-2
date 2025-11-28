@@ -121,17 +121,17 @@ typedef struct {
 
 **Busca e Travessia**:
 
-- ✅ Busca em Profundidade (DFS) - recursiva e iterativa
-- ✅ Busca em Largura (BFS)
-- ✅ Encontrar componentes conexas
-- ✅ Verificar existência de caminhos
-- ✅ Encontrar caminhos entre vértices
+- Busca em Profundidade (DFS) - recursiva e iterativa
+- Busca em Largura (BFS)
+- Encontrar componentes conexas
+- Verificar existência de caminhos
+- Encontrar caminhos entre vértices
 
 **Algoritmos Avançados**:
 
-- ✅ **Dijkstra**: Caminhos mínimos (grafos ponderados)
-- ✅ **Prim**: Árvore Geradora Mínima (MST)
-- ✅ **Ordenação Topológica**: Para DAGs
+- **Dijkstra**: Caminhos mínimos (grafos ponderados)
+- **Prim**: Árvore Geradora Mínima (MST)
+- **Ordenação Topológica**: Para DAGs
 
 **Estruturas Auxiliares**:
 
