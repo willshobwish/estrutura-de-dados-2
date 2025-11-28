@@ -6,11 +6,11 @@ Repositório contendo implementações de estruturas de dados avançadas desenvo
 
 ### Árvores
 
-#### Árvore B (`b_tree/` e `b_tree_project/`)
+#### Árvore B (`b_tree/` e `projetos/b_tree_project/`)
 
 Implementação completa de Árvore B com aplicação prática em processamento de imagens.
 
-**Projeto Destaque** (`b_tree_project/`):
+**Projeto Destaque** (`projetos/b_tree_project/`):
 
 - Carrega imagens PNG
 - Embaralha pixels aleatoriamente
@@ -139,7 +139,7 @@ typedef struct {
 - Fila (BFS)
 - Fila de Prioridade (Dijkstra/Prim)
 
-#### Projeto: Grafo de Pré-Requisitos (`graph/project/`)
+#### Projeto: Grafo de Pré-Requisitos (`projetos/graph_project/`)
 
 Sistema de análise de dependências de disciplinas usando grafos direcionados.
 
@@ -181,7 +181,7 @@ Cada projeto possui seu próprio `Makefile`:
 
 ```bash
 # Navegar até o projeto desejado
-cd b_tree_project/    # ou graph/project/, trie/, etc.
+cd projetos/b_tree_project/    # ou projetos/graph_project/, trie/, etc.
 
 # Compilar
 make
@@ -212,12 +212,13 @@ gcc -o trie main.c trie.c
 ed2/
 ├── arvore/              # Árvore B básica
 ├── b_tree/              # Árvore B completa
-├── b_tree_project/      # Projeto com processamento de imagens
 ├── graph/
 │   ├── doc/            # Documentação LaTeX
 │   ├── list/           # Implementação com lista de adjacência
-│   ├── matrice/        # Implementação com matriz de adjacência
-│   └── project/        # Sistema de pré-requisitos
+│   └── matrice/        # Implementação com matriz de adjacência
+├── projetos/
+│   ├── b_tree_project/ # Projeto com processamento de imagens
+│   └── graph_project/  # Sistema de pré-requisitos
 ├── trie/               # Árvore Trie
 ├── radix/              # Radix Tree
 ├── patricia_trie/      # Patricia Trie
@@ -276,8 +277,8 @@ _m = comprimento da chave, n = número de elementos, V = vértices, E = arestas_
 ## Documentação Adicional
 
 - `graph/PRIM_README.md`: Detalhes sobre Algoritmo de Prim
-- `graph/project/README.md`: Sistema de pré-requisitos
-- `b_tree_project/readme.md`: Projeto de processamento de imagens
+- `projetos/graph_project/README.md`: Sistema de pré-requisitos
+- `projetos/b_tree_project/readme.md`: Projeto de processamento de imagens
 - `docs/`: Documentação em LaTeX com teoria e implementação
 
 ## Aplicações Práticas
